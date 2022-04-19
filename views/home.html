@@ -9,11 +9,48 @@
         *{
             margin: 0;
             padding: 0;
+            box-sizing: border-box;
         }
-        #messageBox {
+        h1{
+            text-align: center;
+        }
+        .container{
+            width: 30%;
+            margin: auto;
             border: 2px black solid;
-            width: 70%;
-            padding: 20px;
+        }
+
+        .container form {
+            /* background-color: red; */
+            display: flex;
+            margin: 5px 0;
+        }
+
+        .container input {
+            /* width: 89%; */
+            flex-grow: 8;
+            outline: 0;
+            border: grey solid 1px;
+            /* height: 50px; */
+            font-size: 16px;
+            padding: 4px 20px;
+            border-radius: 100px;
+        }
+        .container button{
+            /* width: 10.2%; */
+            flex-grow: 1;
+            /* height: 100%; */
+            border: 2px green solid;
+            border-radius: 100px;
+            color: white;
+            background-color: green;
+        }
+
+        #messageBox {
+            /* border: 2px black solid; */
+            /* width: 30%;
+            margin: auto; */
+            padding: 15px;
             overflow: auto;
             scrollbar-width: none; /* For firefox */
             height: 500px;
@@ -34,25 +71,36 @@
             border-radius: 8px;
             color:white;
             display: inline;
-            max-width: 70%;
+            max-width: 80%;
         }
         .push_right{
-            /* border: 1px red solid; */
-            /* background-color: rgb(6, 95, 22); */
-            /* text-align: end; */
             display: flex;
             flex-direction: row-reverse;
-    
+        }
+
+        @media only screen and (max-width: 1024px) {
+            .container {
+                width: 60%;
+            }
+        }
+        @media only screen and (max-width: 600px) {
+            .container {
+                width: 99.5%;
+            }
         }
     </style>
+     <script src="https://kit.fontawesome.com/0999bb6500.js" crossorigin="anonymous"></script>
 </head>
 <body>
-    <h1>Web Sockets</h1>
-    <div id="messageBox"></div>
-    <form action="" method="get">
-        <input type="text">
-    <button>Send</button>
-    </form>
+    <h1>Chat Application</h1>
+    <div class="container">
+        <div id="messageBox"></div>
+        <form action="" method="get">
+            <input type="text">
+        <button> <i class="fa-solid fa-paper-plane"></i> </button>
+        </form>
+    </div>
+   
     
     <script src="script.js"></script>
     

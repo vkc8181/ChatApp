@@ -1,5 +1,7 @@
 const ws = require('ws');
 
+const port = process.env.port||1234;
+
 const wss = new ws.Server({
     port: 1234
 }, () => {
