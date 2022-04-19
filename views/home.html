@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+        }
+        #messageBox {
+            border: 2px black solid;
+            width: 70%;
+            padding: 20px;
+            overflow: auto;
+            scrollbar-width: none; /* For firefox */
+            height: 500px;
+        }
+        #messageBox::-webkit-scrollbar{    /* For chrome, safari, opera */
+            display: none;
+        }
+        .messageDiv{
+            margin: 10px;
+            /* background-color: gray; */
+            display: flex;
+            /* width: 70%; */
+        }
+        .message {
+            /* margin: 20px; */
+            background-color: rgb(71, 71, 71);
+            padding: 5px;
+            border-radius: 8px;
+            color:white;
+            display: inline;
+            max-width: 70%;
+        }
+        .push_right{
+            /* border: 1px red solid; */
+            /* background-color: rgb(6, 95, 22); */
+            /* text-align: end; */
+            display: flex;
+            flex-direction: row-reverse;
+    
+        }
+    </style>
+</head>
+<body>
+    <h1>Web Sockets</h1>
+    <div id="messageBox"></div>
+    <form action="" method="get">
+        <input type="text">
+    <button>Send</button>
+    </form>
+    
+    <script src="script.js"></script>
+    
+</body>
+</html>
