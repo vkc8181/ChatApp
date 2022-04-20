@@ -28,7 +28,6 @@ const server = app.listen(port,() => {
 
 const parseIfValifJSON = str => {
     try{
-        if(isNaN(str))
         return JSON.parse(str);
     }
     catch (e) { }
@@ -63,19 +62,22 @@ server.on('upgrade', async function upgrade(request, socket, head) {
 wss.on('connection', wsc => {
     
     console.log('Connection made');
-    wsc.send('Hello from the server');
+    wsc.send(JSON.stringify({message:'Hello from the server'}));
     wsc.on('message', data => {
         console.log('Incoming msg: ',data);
         const incomingObj = parseIfValifJSON(data);
-        if(incomingObj) {
+        console.log('msg:',incomingObj.message);
+        if(incomingObj.roomId) {
             wsc.roomId = incomingObj.roomId;
             console.log('roomid assigned: ',incomingObj.roomId);
         }
-        wss.clients.forEach(client => {
-            if(client.readyState === ws.OPEN && client != wsc && client.roomId === wsc.roomId && incomingObj===false)
-            client.send(data);
-            // console.log('vkc=',client);
-        });
+        if(incomingObj.message){
+            wss.clients.forEach(client => {
+                if(client.readyState === ws.OPEN && client != wsc && client.roomId === wsc.roomId)
+                client.send( JSON.stringify({ message:incomingObj.message }) );
+                // console.log('vkc=',client);
+            });
+        }
         // wsc.send(data);
     });
 });

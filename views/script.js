@@ -16,9 +16,18 @@ const input = document.querySelector('#input');
 const button = document.querySelector('button');
 const form = document.querySelector('form');
 
-onlineCountDiv.textContent = "2";
+
 
 button.disabled = true;
+
+const parseIfValifJSON = str => {
+    try{
+        if(isNaN(str))
+        return JSON.parse(str);
+    }
+    catch (e) { }
+    return false;
+};
 
 function updateScroll(){
     messageBox.scrollTop = messageBox.scrollHeight;
@@ -53,8 +62,14 @@ ws.onopen = ()=>{
 }
 
 ws.onmessage = event => {
-    displayMsg(event.data, 'Server');
-    console.log(event.data);
+    const parsedData = parseIfValifJSON( event.data );
+    if(parsedData.message){
+        displayMsg(parsedData.message, 'Server');
+        console.log(event.data);
+    }
+    if(parsedData.onlineCount){
+        onlineCountDiv.textContent = parsedData.onlineCount;
+    }
 };
 
 const removeBlankChar = (obj, si) => {
@@ -86,7 +101,7 @@ button.addEventListener('click', event => {
     // console.log('isNonEmpty(msg)=',isValid);
     if(isNonEmpty(input)){
         // console.log('iv=',input.value)
-        ws.send(input.value);
+        ws.send(JSON.stringify( {message: input.value} ));
         displayMsg(input.value, 'Self');
     }
     input.value = "";
