@@ -1,11 +1,24 @@
+const express = require('express');
+const app = express();
 const ws = require('ws');
+const path = require('path');
 
-const port = process.env.port||1234;
+app.use('/', express.static(path.resolve(__dirname,'./views')));
+
+
+
+const port = process.env.port||8080; 
+
+const server = app.listen(port,() => {
+    console.log('Express app running on port',port);
+});
+
 
 const wss = new ws.Server({
-    port: 1234
+    // port: 1234
+    server
 }, () => {
-    console.log('Server running on port 1234');
+    console.log('Web Socket running on port',port);
 });
 
 const clients = [];

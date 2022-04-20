@@ -25,10 +25,11 @@ const displayMsg = (msg, source) => {
     messageBox.appendChild(newMsgDiv);
     updateScroll();
 };
-const port = 1234;
+// const port = 8080;
 
 // const ws = new WebSocket(document.URL);
-const ws = new WebSocket(`ws://localhost:${port}`);
+// const ws = new WebSocket(`ws://localhost:${port}`);
+const ws = new WebSocket(`wss://${document.domain}`);
 
 ws.onopen = ()=>{
     button.disabled = false;
