@@ -23,16 +23,16 @@ const wss = new ws.Server({
     console.log('Web Socket running on port',port);
 });
 
-const clients = [];
+// const clients = [];
 
 wss.on('connection', wsc => {
-    clients.push(wsc);
+    // clients.push(wsc);
     console.log('Connection made');
     wsc.send('Hello from the server');
     wsc.on('message', data => {
         console.log('Incoming msg: ',data);
-        clients.forEach(client => {
-            if(client != wsc)
+        wss.clients.forEach(client => {
+            if(client.readyState === ws.OPEN && client != wsc)
             client.send(data);
         });
         // wsc.send(data);
