@@ -20,6 +20,25 @@
             border: 2px black solid;
         }
 
+        .container .roomInfo{
+            display: flex;
+            background-color: rgb(141, 141, 141);
+            height: 50px;
+        }
+        .container .roomInfo .roomName{
+            /* background-color: green; */
+            flex-grow: 5;
+            padding: 9px;
+        }
+        
+        .container .roomInfo .onlineCountDiv{
+            /* background-color: pink; */
+            flex-grow: 5;
+            padding: 9px;
+            text-align: end;
+            
+        }
+
         .container form {
             /* background-color: red; */
             display: flex;
@@ -97,6 +116,11 @@
 <body>
     <h1>Chat Application</h1>
     <div class="container">
+        <div class="roomInfo">
+            <div class="roomName">Roomname</div>
+            <div class="onlineCountDiv"></div>
+
+        </div>
         <div id="messageBox"></div>
         <form action="" method="get">
             <!-- <input type="text"> -->

@@ -9,10 +9,14 @@ console.log('roomiD: '+roomId);
 
 // }
 
+const roomName = document.querySelector('.container .roomInfo .roomName');
+const onlineCountDiv = document.querySelector('.container .roomInfo .onlineCountDiv');
 const messageBox = document.querySelector('#messageBox');
 const input = document.querySelector('#input');
 const button = document.querySelector('button');
 const form = document.querySelector('form');
+
+onlineCountDiv.textContent = "2";
 
 button.disabled = true;
 
@@ -37,8 +41,8 @@ const displayMsg = (msg, source) => {
 const port = 8080;
 
 // const ws = new WebSocket(document.URL);
-// const ws = new WebSocket(`ws://localhost:${port}`);
-const ws = new WebSocket(`wss://${document.domain}`);
+const ws = new WebSocket(`ws://localhost:${port}`);
+// const ws = new WebSocket(`wss://${document.domain}`);    //For cloud deployment
 
 // ws.vkc=4;
 
