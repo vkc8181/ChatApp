@@ -1,5 +1,14 @@
 console.log('script.js included');
 
+const currURL = document.URL;
+const roomId = parseInt(currURL.slice(-4));
+
+console.log('roomiD: '+roomId);
+
+// if(roomId){
+
+// }
+
 const messageBox = document.querySelector('#messageBox');
 const input = document.querySelector('#input');
 const button = document.querySelector('button');
@@ -34,7 +43,8 @@ const ws = new WebSocket(`ws://localhost:${port}`);
 // ws.vkc=4;
 
 ws.onopen = ()=>{
-    ws.vkc=4;
+    // ws.vkc=4;
+    ws.send(JSON.stringify({roomId}))
     button.disabled = false;
 }
 

@@ -10,11 +10,30 @@ app.get('/',(req,res) => {
 	res.render('home.ejs');
 })
 
+app.get('/room/:roomid',(req,res) => {
+    const roomid = req.params.roomid;
+    if(roomid.length != 4)
+    res.send('Not a valid room');
+
+    console.log('roomid='+roomid);
+    res.locals.roomid = roomid;
+    res.render('home.ejs');
+});
+
 const port = process.env.PORT||8080; 
 
 const server = app.listen(port,() => {
     console.log('Express app running on port',port);
 });
+
+const parseIfValifJSON = str => {
+    try{
+        if(isNaN(str))
+        return JSON.parse(str);
+    }
+    catch (e) { }
+    return false;
+};
 
 
 const wss = new ws.Server({
@@ -40,16 +59,22 @@ server.on('upgrade', async function upgrade(request, socket, head) {
   });
 
 
+
 wss.on('connection', wsc => {
     
     console.log('Connection made');
     wsc.send('Hello from the server');
     wsc.on('message', data => {
         console.log('Incoming msg: ',data);
+        const incomingObj = parseIfValifJSON(data);
+        if(incomingObj) {
+            wsc.roomId = incomingObj.roomId;
+            console.log('roomid assigned: ',incomingObj.roomId);
+        }
         wss.clients.forEach(client => {
-            if(client.readyState === ws.OPEN && client != wsc)
+            if(client.readyState === ws.OPEN && client != wsc && client.roomId === wsc.roomId && incomingObj===false)
             client.send(data);
-            console.log('vkc=',client);
+            // console.log('vkc=',client);
         });
         // wsc.send(data);
     });
