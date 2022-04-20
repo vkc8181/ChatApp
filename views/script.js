@@ -37,8 +37,8 @@ const displayMsg = (msg, source) => {
 const port = 8080;
 
 // const ws = new WebSocket(document.URL);
-const ws = new WebSocket(`ws://localhost:${port}`);
-// const ws = new WebSocket(`wss://${document.domain}`);
+// const ws = new WebSocket(`ws://localhost:${port}`);
+const ws = new WebSocket(`wss://${document.domain}`);
 
 // ws.vkc=4;
 
