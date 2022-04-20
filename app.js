@@ -5,7 +5,9 @@ const path = require('path');
 
 app.use('/', express.static(path.resolve(__dirname,'./views')));
 
-
+app.get('/',(req,res) => {
+	res.render('home.ejs');
+})
 
 const port = process.env.port||8080; 
 
