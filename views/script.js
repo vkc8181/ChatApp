@@ -50,8 +50,8 @@ const displayMsg = (msg, source) => {
 const port = 8080;
 
 // const ws = new WebSocket(document.URL);
-const ws = new WebSocket(`ws://localhost:${port}`);
-// const ws = new WebSocket(`wss://${document.domain}`);    //For cloud deployment
+// const ws = new WebSocket(`ws://localhost:${port}`);  //For localhost
+const ws = new WebSocket(`wss://${document.domain}`);    //For cloud deployment
 
 // ws.vkc=4;
 
@@ -67,8 +67,11 @@ ws.onmessage = event => {
         displayMsg(parsedData.message, 'Server');
         console.log(event.data);
     }
+    if(parsedData.roomId){
+        roomName.textContent = `RoomId: ${parsedData.roomId}`;
+    }
     if(parsedData.onlineCount){
-        onlineCountDiv.textContent = parsedData.onlineCount;
+        onlineCountDiv.textContent = `Online: ${parsedData.onlineCount}`;
     }
 };
 

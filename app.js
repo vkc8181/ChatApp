@@ -69,7 +69,8 @@ wss.on('connection', wsc => {
         console.log('msg:',incomingObj.message);
         if(incomingObj.roomId) {
             wsc.roomId = incomingObj.roomId;
-            console.log('roomid assigned: ',incomingObj.roomId);
+            wsc.send(JSON.stringify({ roomId:incomingObj.roomId }));
+            console.log('roomid assigned: ',incomingObj.roomId); 
         }
         if(incomingObj.message){
             wss.clients.forEach(client => {
@@ -79,6 +80,14 @@ wss.on('connection', wsc => {
             });
         }
         // wsc.send(data);
+        setInterval(() => {
+           let onlineInRoom = 0;
+           wss.clients.forEach(client => {
+            if(client.readyState === ws.OPEN && client.roomId === wsc.roomId)
+                onlineInRoom++;
+            });
+            wsc.send(JSON.stringify({ onlineCount: onlineInRoom }));
+        },1000);
     });
 });
 
