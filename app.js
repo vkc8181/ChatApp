@@ -2,6 +2,7 @@ const express = require('express');
 const app = express();
 const ws = require('ws');
 const path = require('path');
+const { info } = require('console');
 
 app.use('/', express.static(path.resolve(__dirname,'./views')));
 
@@ -18,15 +19,18 @@ const server = app.listen(port,() => {
 
 const wss = new ws.Server({
     // port: 1234
-    server
+    server,
+    verifyClient(info) {
+        console.log(info);
+        return false;
+    }
 }, () => {
     console.log('Web Socket running on port',port);
 });
 
-// const clients = [];
 
 wss.on('connection', wsc => {
-    // clients.push(wsc);
+    
     console.log('Connection made');
     wsc.send('Hello from the server');
     wsc.on('message', data => {
