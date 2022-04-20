@@ -19,14 +19,25 @@ const server = app.listen(port,() => {
 
 const wss = new ws.Server({
     // port: 1234
-    server,
-    verifyClient(info) {
-        console.log(info);
-        return false;
-    }
+    // server,
+    // verifyClient(info) {
+    //     console.log(info);
+    //     return false;
+    // }
+    noServer: true
 }, () => {
     console.log('Web Socket running on port',port);
 });
+
+server.on('upgrade', async function upgrade(request, socket, head) {
+   
+    // socket.destroy();
+    // return socket.end('HTTP/1.1 401 Unauthorized\r\n', 'ascii');
+    let args = [];
+    wss.handleUpgrade(request, socket, head, function done(ws) {
+      wss.emit('connection', ws, request, ...args);
+    });
+  });
 
 
 wss.on('connection', wsc => {
@@ -38,6 +49,7 @@ wss.on('connection', wsc => {
         wss.clients.forEach(client => {
             if(client.readyState === ws.OPEN && client != wsc)
             client.send(data);
+            console.log('vkc=',client);
         });
         // wsc.send(data);
     });

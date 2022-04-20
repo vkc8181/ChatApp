@@ -31,7 +31,10 @@ const port = 8080;
 const ws = new WebSocket(`ws://localhost:${port}`);
 // const ws = new WebSocket(`wss://${document.domain}`);
 
+// ws.vkc=4;
+
 ws.onopen = ()=>{
+    ws.vkc=4;
     button.disabled = false;
 }
 
