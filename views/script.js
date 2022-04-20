@@ -1,7 +1,7 @@
 console.log('script.js included');
 
 const messageBox = document.querySelector('#messageBox');
-const input = document.querySelector('input');
+const input = document.querySelector('#input');
 const button = document.querySelector('button');
 const form = document.querySelector('form');
 
@@ -12,7 +12,7 @@ function updateScroll(){
 }
 
 const displayMsg = (msg, source) => {
-    const newMsg = document.createElement('p');
+    const newMsg = document.createElement('pre');
     newMsg.classList.add('message');
     const newMsgDiv = document.createElement('div');
     newMsgDiv.classList.add('messageDiv');
@@ -25,7 +25,7 @@ const displayMsg = (msg, source) => {
     messageBox.appendChild(newMsgDiv);
     updateScroll();
 };
-// const port = 8080;
+const port = 8080;
 
 // const ws = new WebSocket(document.URL);
 // const ws = new WebSocket(`ws://localhost:${port}`);
@@ -40,10 +40,24 @@ ws.onmessage = event => {
     console.log(event.data);
 };
 
-const isNonEmpty = (msg) => {
-    for(let i = 0; i<msg.length; i++){
-        if(msg[i]!=' ') 
-        return true;
+const removeBlankChar = (obj, si) => {
+    obj.value = obj.value.slice(si);
+    const len = obj.value.length;
+    let li = len;
+    for(let i = len-1; i>=0; i--) {
+        if(obj.value[i]===' ' || obj.value[i]==='\n')
+        li = i;
+        else break;
+    }
+    obj.value = obj.value.slice(0,li);
+}
+
+const isNonEmpty = (obj) => {
+    for(let i = 0; i<obj.value.length; i++){
+        if(obj.value[i]!=' '&&obj.value[i]!='\n'){
+            removeBlankChar(obj, i);
+            return true;
+        }
     }
     return false;
 }
@@ -51,11 +65,23 @@ const isNonEmpty = (msg) => {
 button.addEventListener('click', event => {
     event.preventDefault();
     // event.stopPropagation();
-    let msg = input.value;
-    console.log('isNonEmpty(msg)=',isNonEmpty(msg));
-    if(isNonEmpty(msg)){
-        ws.send(msg);
-        displayMsg(msg, 'Self');
+    // const isValid = isNonEmpty(input);
+    // console.log('isNonEmpty(msg)=',isValid);
+    if(isNonEmpty(input)){
+        // console.log('iv=',input.value)
+        ws.send(input.value);
+        displayMsg(input.value, 'Self');
     }
     input.value = "";
 });
+
+input.addEventListener('keydown',(event)=> {
+    if(event.key == 'Enter'){ 
+        if(!event.shiftKey){
+            button.click();
+            event.preventDefault(); 
+        }
+}
+    
+    console.log(event);
+})

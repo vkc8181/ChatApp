@@ -26,8 +26,10 @@
             margin: 5px 0;
         }
 
-        .container input {
-            /* width: 89%; */
+        .container #input {
+            resize: none;
+            height: 50px;
+            /* max-height: 100px; */
             flex-grow: 8;
             outline: 0;
             border: grey solid 1px;
@@ -35,6 +37,7 @@
             font-size: 16px;
             padding: 4px 20px;
             border-radius: 100px;
+            resize: none;
         }
         .container button{
             /* width: 10.2%; */
@@ -96,7 +99,8 @@
     <div class="container">
         <div id="messageBox"></div>
         <form action="" method="get">
-            <input type="text">
+            <!-- <input type="text"> -->
+            <textarea name="" id="input"></textarea>
         <button> <i class="fa-solid fa-paper-plane"></i> </button>
         </form>
     </div>
