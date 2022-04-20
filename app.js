@@ -9,7 +9,7 @@ app.get('/',(req,res) => {
 	res.render('home.ejs');
 })
 
-const port = process.env.port||8080; 
+const port = process.env.PORT||8080; 
 
 const server = app.listen(port,() => {
     console.log('Express app running on port',port);
