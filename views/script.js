@@ -63,6 +63,21 @@ setInterval(() => {
              ws.onopen = ()=>{
                 ws.send(JSON.stringify({roomId}));
             }
+
+            ws.onmessage = event => {
+                const parsedData = parseIfValifJSON( event.data );
+                if(parsedData.message){
+                    displayMsg(parsedData.message, 'Server');
+                    console.log(event.data);
+                }
+                if(parsedData.roomId){
+                    roomName.textContent = `RoomId: ${parsedData.roomId}`;
+                }
+                if(parsedData.onlineCount){
+                    onlineCountDiv.textContent = `Online: ${parsedData.onlineCount}`;
+                }
+            };
+            
         }
         catch(e) {
             console.log('Can\'t connect to web socket');
