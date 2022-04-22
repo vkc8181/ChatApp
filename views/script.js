@@ -15,7 +15,7 @@ const messageBox = document.querySelector('#messageBox');
 const input = document.querySelector('#input');
 const button = document.querySelector('button');
 const form = document.querySelector('form');
-
+const debug = document.querySelector('#debug');
 
 
 button.disabled = true;
@@ -50,13 +50,21 @@ const displayMsg = (msg, source) => {
 const port = 8080;
 
 // const ws = new WebSocket(document.URL);
-// const ws = new WebSocket(`ws://localhost:${port}`);  //For localhost
+// let ws = new WebSocket(`ws://localhost:${port}`);  //For localhost
 
 let ws = new WebSocket(`wss://${document.domain}`);    //For cloud deployment
 
 setInterval(() => {
-    if(ws.readyState === 3)
-        ws = new WebSocket(`wss://${document.domain}`);
+    debug.textContent = `readyState = ${ws.readyState}`;
+    if(ws.readyState === 3){
+        try{
+            // ws = new WebSocket(`ws://localhost:${port}`);  //For localhost
+             ws = new WebSocket(`wss://${document.domain}`);  //For cloud deploy
+        }
+        catch(e) {
+            console.log('Can\'t connect to web socket');
+        }
+    }
 },2000);
 
 // ws.vkc=4;
