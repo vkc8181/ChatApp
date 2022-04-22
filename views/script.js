@@ -16,6 +16,7 @@ const input = document.querySelector('#input');
 const button = document.querySelector('button');
 const form = document.querySelector('form');
 const debug = document.querySelector('#debug');
+const audio = new Audio('/ting.mp3');
 
 
 button.disabled = true;
@@ -43,6 +44,8 @@ const displayMsg = (msg, source) => {
         newMsgDiv.classList.add('push_right');
         newMsg.style.backgroundColor = 'green';
     }
+    else 
+        audio.play();
     newMsg.textContent = msg;
     messageBox.appendChild(newMsgDiv);
     updateScroll();
@@ -52,9 +55,12 @@ const port = 8080;
 // const ws = new WebSocket(document.URL);
 // let ws = new WebSocket(`ws://localhost:${port}`);  //For localhost
 
-let ws = new WebSocket(`wss://${document.domain}`);    //For cloud deployment
+// let ws = new WebSocket(`wss://${document.domain}`);    //For cloud deployment
 
-setInterval(() => {
+let ws = {readyState: 3};
+
+const handleWS = () => {
+
     console.log('readyState = ',ws.readyState);
     debug.textContent = `readyState = ${ws.readyState}`;
     if(ws.readyState === 3){
@@ -66,7 +72,48 @@ setInterval(() => {
                 ws.send(JSON.stringify({roomId}));
             }
 
-            ws.addEventListener('message', ( event ) => {
+            ws.addEventListener('message', ( event ) => {       //It finally worked
+                const parsedData = parseIfValifJSON( event.data );
+                if(parsedData.message){
+                    displayMsg(parsedData.message, 'Server');
+                    console.log(event.data);
+                }
+                if(parsedData.roomId){
+                    roomName.textContent = `RoomId: ${parsedData.roomId}`;
+                }
+                if(parsedData.onlineCount){
+                    onlineCountDiv.textContent = `Online: ${parsedData.onlineCount}`;
+                }
+            })
+
+
+        }
+        catch(e) {
+            console.log('Can\'t connect to web socket');
+        }
+    }
+
+
+
+    setTimeout(handleWS, 2000);
+}
+
+handleWS();
+
+/*
+setInterval(() => {
+    console.log('readyState = ',ws.readyState);
+    debug.textContent = `readyState = ${ws.readyState}`;
+    if(ws.readyState === 3){
+        try{
+            ws = new WebSocket(`ws://localhost:${port}`);  //For localhost
+            //  ws = new WebSocket(`wss://${document.domain}`);  //For cloud deploy
+             ws.onopen = ()=>{
+                console.log('Opened conection from setIntervel');
+                ws.send(JSON.stringify({roomId}));
+            }
+
+            ws.addEventListener('message', ( event ) => {       //It finally worked
                 const parsedData = parseIfValifJSON( event.data );
                 if(parsedData.message){
                     displayMsg(parsedData.message, 'Server');
@@ -88,6 +135,10 @@ setInterval(() => {
     }
 
 },2000);
+*/
+
+
+
 
 // ws.vkc=4;
 
@@ -98,33 +149,33 @@ ws.onopen = ()=>{
     button.disabled = false;
 }
 
-ws.onmessage = event => {
-    const parsedData = parseIfValifJSON( event.data );
-    if(parsedData.message){
-        displayMsg(parsedData.message, 'Server');
-        console.log(event.data);
-    }
-    if(parsedData.roomId){
-        roomName.textContent = `RoomId: ${parsedData.roomId}`;
-    }
-    if(parsedData.onlineCount){
-        onlineCountDiv.textContent = `Online: ${parsedData.onlineCount}`;
-    }
-};
+// ws.onmessage = event => {                                    //Its better to use addEventListner insted of on
+//     const parsedData = parseIfValifJSON( event.data );
+//     if(parsedData.message){
+//         displayMsg(parsedData.message, 'Server');
+//         console.log(event.data);
+//     }
+//     if(parsedData.roomId){
+//         roomName.textContent = `RoomId: ${parsedData.roomId}`;
+//     }
+//     if(parsedData.onlineCount){
+//         onlineCountDiv.textContent = `Online: ${parsedData.onlineCount}`;
+//     }
+// };
 
-ws.addEventListener('message', ( event ) => {
-    const parsedData = parseIfValifJSON( event.data );
-    if(parsedData.message){
-        displayMsg(parsedData.message, 'Server');
-        console.log(event.data);
-    }
-    if(parsedData.roomId){
-        roomName.textContent = `RoomId: ${parsedData.roomId}`;
-    }
-    if(parsedData.onlineCount){
-        onlineCountDiv.textContent = `Online: ${parsedData.onlineCount}`;
-    }
-})
+// ws.addEventListener('message', ( event ) => {
+//     const parsedData = parseIfValifJSON( event.data );
+//     if(parsedData.message){
+//         displayMsg(parsedData.message, 'Server');
+//         console.log(event.data);
+//     }
+//     if(parsedData.roomId){
+//         roomName.textContent = `RoomId: ${parsedData.roomId}`;
+//     }
+//     if(parsedData.onlineCount){
+//         onlineCountDiv.textContent = `Online: ${parsedData.onlineCount}`;
+//     }
+// })
 
 const removeBlankChar = (obj, si) => {
     obj.value = obj.value.slice(si);
