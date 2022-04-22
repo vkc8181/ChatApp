@@ -92,6 +92,20 @@ ws.onmessage = event => {
     }
 };
 
+ws.addEventListener('message', ( event ) => {
+    const parsedData = parseIfValifJSON( event.data );
+    if(parsedData.message){
+        displayMsg(parsedData.message, 'Server');
+        console.log(event.data);
+    }
+    if(parsedData.roomId){
+        roomName.textContent = `RoomId: ${parsedData.roomId}`;
+    }
+    if(parsedData.onlineCount){
+        onlineCountDiv.textContent = `Online: ${parsedData.onlineCount}`;
+    }
+})
+
 const removeBlankChar = (obj, si) => {
     obj.value = obj.value.slice(si);
     const len = obj.value.length;
