@@ -55,17 +55,25 @@ const port = 8080;
 let ws = new WebSocket(`wss://${document.domain}`);    //For cloud deployment
 
 setInterval(() => {
+    console.log('readyState = ',ws.readyState);
     debug.textContent = `readyState = ${ws.readyState}`;
     if(ws.readyState === 3){
         try{
             // ws = new WebSocket(`ws://localhost:${port}`);  //For localhost
              ws = new WebSocket(`wss://${document.domain}`);  //For cloud deploy
              ws.onopen = ()=>{
+                console.log('Opened conection from setIntervel');
                 ws.send(JSON.stringify({roomId}));
             }
         }
         catch(e) {
             console.log('Can\'t connect to web socket');
+        }
+    }
+    else if(ws.readyState === 1) {
+        ws.onopen = ()=>{
+            console.log('Opened conection from setIntervel');
+            ws.send(JSON.stringify({roomId}));
         }
     }
 },2000);
@@ -74,6 +82,7 @@ setInterval(() => {
 
 ws.onopen = ()=>{
     // ws.vkc=4;
+    console.log('Opened conection for first time');
     ws.send(JSON.stringify({roomId}));
     button.disabled = false;
 }
