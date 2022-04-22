@@ -65,17 +65,28 @@ setInterval(() => {
                 console.log('Opened conection from setIntervel');
                 ws.send(JSON.stringify({roomId}));
             }
+
+            ws.addEventListener('message', ( event ) => {
+                const parsedData = parseIfValifJSON( event.data );
+                if(parsedData.message){
+                    displayMsg(parsedData.message, 'Server');
+                    console.log(event.data);
+                }
+                if(parsedData.roomId){
+                    roomName.textContent = `RoomId: ${parsedData.roomId}`;
+                }
+                if(parsedData.onlineCount){
+                    onlineCountDiv.textContent = `Online: ${parsedData.onlineCount}`;
+                }
+            })
+
+
         }
         catch(e) {
             console.log('Can\'t connect to web socket');
         }
     }
-    else if(ws.readyState === 1) {
-        ws.onopen = ()=>{
-            console.log('Opened conection from setIntervel');
-            ws.send(JSON.stringify({roomId}));
-        }
-    }
+
 },2000);
 
 // ws.vkc=4;
