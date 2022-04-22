@@ -51,7 +51,13 @@ const port = 8080;
 
 // const ws = new WebSocket(document.URL);
 // const ws = new WebSocket(`ws://localhost:${port}`);  //For localhost
-const ws = new WebSocket(`wss://${document.domain}`);    //For cloud deployment
+
+let ws = new WebSocket(`wss://${document.domain}`);    //For cloud deployment
+
+setInterval(() => {
+    if(ws.readyState === 3)
+        ws = new WebSocket(`wss://${document.domain}`);
+},2000);
 
 // ws.vkc=4;
 
