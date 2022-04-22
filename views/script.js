@@ -60,7 +60,9 @@ setInterval(() => {
         try{
             // ws = new WebSocket(`ws://localhost:${port}`);  //For localhost
              ws = new WebSocket(`wss://${document.domain}`);  //For cloud deploy
-             ws.send(JSON.stringify({roomId}));
+             ws.onopen = ()=>{
+                ws.send(JSON.stringify({roomId}));
+            }
         }
         catch(e) {
             console.log('Can\'t connect to web socket');
