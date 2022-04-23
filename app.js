@@ -72,10 +72,14 @@ wss.on('connection', wsc => {
             wsc.send(JSON.stringify({ roomId:incomingObj.roomId }));
             console.log('roomid assigned: ',incomingObj.roomId); 
         }
+        if(incomingObj.userName) {
+            wsc.userName = incomingObj.userName;
+            console.log('userName assigned: ',wsc.userName); 
+        }
         if(incomingObj.message){
             wss.clients.forEach(client => {
                 if(client.readyState === ws.OPEN && client != wsc && client.roomId === wsc.roomId)
-                client.send( JSON.stringify({ message:incomingObj.message }) );
+                client.send( JSON.stringify({ message: `${wsc.userName}: ${incomingObj.message}` }) );
                 // console.log('vkc=',client);
             });
         }

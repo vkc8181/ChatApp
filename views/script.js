@@ -18,6 +18,8 @@ const form = document.querySelector('form');
 const debug = document.querySelector('#debug');
 const audio = new Audio('/ting.mp3');
 
+const userName = prompt('Enter your name');
+
 
 button.disabled = true;
 
@@ -65,11 +67,12 @@ const handleWS = () => {
     debug.textContent = `readyState = ${ws.readyState}`;
     if(ws.readyState === 3){
         try{
-            // ws = new WebSocket(`ws://localhost:${port}`);  //For localhost
-             ws = new WebSocket(`wss://${document.domain}`);  //For cloud deploy
+            ws = new WebSocket(`ws://localhost:${port}`);  //For localhost
+            //  ws = new WebSocket(`wss://${document.domain}`);  //For cloud deploy
              ws.onopen = ()=>{
                 console.log('Opened conection from setIntervel');
-                ws.send(JSON.stringify({roomId}));
+                ws.send(JSON.stringify({roomId, userName}));
+                button.disabled = false;
             }
 
             ws.addEventListener('message', ( event ) => {       //It finally worked
@@ -142,12 +145,12 @@ setInterval(() => {
 
 // ws.vkc=4;
 
-ws.onopen = ()=>{
-    // ws.vkc=4;
-    console.log('Opened conection for first time');
-    ws.send(JSON.stringify({roomId}));
-    button.disabled = false;
-}
+// ws.onopen = ()=>{
+//     // ws.vkc=4;
+//     console.log('Opened conection for first time');
+//     ws.send(JSON.stringify({roomId}));
+//     button.disabled = false;
+// }
 
 // ws.onmessage = event => {                                    //Its better to use addEventListner insted of on
 //     const parsedData = parseIfValifJSON( event.data );
