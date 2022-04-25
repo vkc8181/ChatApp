@@ -50,7 +50,7 @@ const displayNotification = (msg) => {
     
 };
 
-displayNotification(userName+' joined the chat');
+// displayNotification(userName+' joined the chat');
 
 const displayMsg = (msg, source, owner) => {
     const newMsg = document.createElement('pre');
@@ -86,8 +86,8 @@ const handleWS = () => {
     debug.textContent = `readyState = ${ws.readyState}`;
     if(ws.readyState === 3){
         try{
-            ws = new WebSocket(`ws://localhost:${port}`);  //For localhost
-            //  ws = new WebSocket(`wss://${document.domain}`);  //For cloud deploy
+            // ws = new WebSocket(`ws://localhost:${port}`);  //For localhost
+             ws = new WebSocket(`wss://${document.domain}`);  //For cloud deploy
              ws.onopen = ()=>{
                 console.log('Opened conection from setIntervel');
                 ws.send(JSON.stringify({roomId, userName}));
