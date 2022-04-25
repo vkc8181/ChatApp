@@ -79,7 +79,7 @@ wss.on('connection', wsc => {
         if(incomingObj.message){
             wss.clients.forEach(client => {
                 if(client.readyState === ws.OPEN && client != wsc && client.roomId === wsc.roomId)
-                client.send( JSON.stringify({ message: `${wsc.userName}: ${incomingObj.message}` }) );
+                client.send( JSON.stringify({ userName: wsc.userName, message: incomingObj.message }) );
                 // console.log('vkc=',client);
             });
         }

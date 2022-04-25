@@ -36,7 +36,7 @@ function updateScroll(){
     messageBox.scrollTop = messageBox.scrollHeight;
 }
 
-const displayMsg = (msg, source) => {
+const displayMsg = (msg, source, owner) => {
     const newMsg = document.createElement('pre');
     newMsg.classList.add('message');
     const newMsgDiv = document.createElement('div');
@@ -44,11 +44,10 @@ const displayMsg = (msg, source) => {
     newMsgDiv.appendChild(newMsg);
     if(source === 'Self') {
         newMsgDiv.classList.add('push_right');
-        newMsg.style.backgroundColor = 'green';
     }
     else 
         audio.play();
-    newMsg.textContent = msg;
+    newMsg.textContent = `${owner}: ${msg}`;
     messageBox.appendChild(newMsgDiv);
     updateScroll();
 };
@@ -78,7 +77,7 @@ const handleWS = () => {
             ws.addEventListener('message', ( event ) => {       //It finally worked
                 const parsedData = parseIfValifJSON( event.data );
                 if(parsedData.message){
-                    displayMsg(parsedData.message, 'Server');
+                    displayMsg(parsedData.message, 'Server', parsedData.userName);
                     console.log(event.data);
                 }
                 if(parsedData.roomId){
@@ -210,7 +209,7 @@ button.addEventListener('click', event => {
     if(isNonEmpty(input)){
         // console.log('iv=',input.value)
         ws.send(JSON.stringify( {message: input.value} ));
-        displayMsg(input.value, 'Self');
+        displayMsg(input.value, 'Self', 'You');
     }
     input.value = "";
 });
