@@ -36,6 +36,22 @@ function updateScroll(){
     messageBox.scrollTop = messageBox.scrollHeight;
 }
 
+const displayNotification = (msg) => {
+    const newNotification = document.createElement('h3');
+    newNotification.classList.add('notification');
+
+    const newMsgDiv = document.createElement('div');
+    newMsgDiv.classList.add('messageDiv');
+    newMsgDiv.appendChild(newNotification);
+
+    newNotification.textContent = msg;
+
+    messageBox.appendChild(newMsgDiv);
+    
+};
+
+displayNotification(userName+' joined the chat');
+
 const displayMsg = (msg, source, owner) => {
     const newMsg = document.createElement('pre');
     newMsg.classList.add('message');
@@ -47,9 +63,13 @@ const displayMsg = (msg, source, owner) => {
     }
     else 
         audio.play();
-    newMsg.textContent = `${owner}: ${msg}`;
+
+    if(owner)
+        newMsg.textContent = `${owner}: ${msg}`;
+    else 
+        newMsg.textContent = msg;
+
     messageBox.appendChild(newMsgDiv);
-    updateScroll();
 };
 const port = 8080;
 
@@ -76,6 +96,10 @@ const handleWS = () => {
 
             ws.addEventListener('message', ( event ) => {       //It finally worked
                 const parsedData = parseIfValifJSON( event.data );
+                if(parsedData.notification){
+                    displayNotification(parsedData.notification);
+                    console.log('Notification:', parsedData.notification);
+                }
                 if(parsedData.message){
                     displayMsg(parsedData.message, 'Server', parsedData.userName);
                     console.log(event.data);

@@ -75,6 +75,13 @@ wss.on('connection', wsc => {
         if(incomingObj.userName) {
             wsc.userName = incomingObj.userName;
             console.log('userName assigned: ',wsc.userName); 
+
+            //Sending all the users notification whenever a new user joins a room
+            wss.clients.forEach(client => {
+                if(client.readyState === ws.OPEN && client != wsc && client.roomId === wsc.roomId)
+                client.send( JSON.stringify({ notification: `${wsc.userName} joined the chat` }) );
+            });
+
         }
         if(incomingObj.message){
             wss.clients.forEach(client => {
