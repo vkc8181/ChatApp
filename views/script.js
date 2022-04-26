@@ -112,6 +112,7 @@ const handleWS = () => {
                 }
                 if(parsedData.recieved){
                     document.querySelector(`#${parsedData.recieved}`).style.backgroundColor = 'green';
+                    document.querySelector(`#${parsedData.recieved}`).removeAttribute('id');
                 }
                 if(parsedData.roomId){
                     roomName.textContent = `RoomId: ${parsedData.roomId}`;
