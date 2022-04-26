@@ -20,8 +20,8 @@ const form = document.querySelector('form');
 const debug = document.querySelector('#debug');
 const audio = new Audio('/ting.mp3');
 
-// const userName = prompt('Enter your name');
-const userName = 'vkc';
+const userName = prompt('Enter your name');
+// const userName = 'vkc';
 
 
 button.disabled = true;
@@ -189,4 +189,5 @@ input.addEventListener('keydown',(event)=> {
 
 onlineCountDiv.addEventListener('click', event => {
     onlineUsersDiv.classList.toggle('visible');
+    event.preventDefault();
 });
