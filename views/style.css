@@ -143,4 +143,7 @@ h1{
     .container {
         width: 99.5%;
     }
+    #messageBox {
+        height: 450px;
+    }
 }
