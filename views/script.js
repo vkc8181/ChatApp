@@ -5,9 +5,7 @@ const roomId = parseInt(currURL.slice(-4));
 
 console.log('roomiD: '+roomId);
 
-// if(roomId){
 
-// }
 
 const roomName = document.querySelector('.container .roomInfo .roomName');
 const onlineCountDiv = document.querySelector('.container .roomInfo .onlineCountDiv');
@@ -17,7 +15,6 @@ const messageBox = document.querySelector('#messageBox');
 const input = document.querySelector('#input');
 const button = document.querySelector('button');
 const form = document.querySelector('form');
-const debug = document.querySelector('#debug');
 const audio = new Audio('/ting.mp3');
 
 const userName = prompt('Enter your name');
@@ -86,8 +83,7 @@ let ws = {readyState: 3};
 
 const handleWS = () => {
 
-    console.log('readyState = ',ws.readyState);
-    debug.textContent = `readyState = ${ws.readyState}`;
+    // console.log('readyState = ',ws.readyState);
     if(ws.readyState === 3){
         try{
             // ws = new WebSocket(`ws://localhost:${port}`);  //For localhost
@@ -117,7 +113,7 @@ const handleWS = () => {
                     onlineUsersDiv.innerHTML = '';
                     parsedData.onlineUsers.forEach(member => {
                         const memberName = document.createElement('p');
-                        memberName.innerHTML = `<i class="fa-solid fa-circle"></i> ${member}`;
+                        memberName.innerHTML = `${member} <i class="fa-solid fa-circle"></i>`;
                         onlineUsersDiv.appendChild(memberName);
                     });
                 }
