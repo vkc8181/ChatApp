@@ -121,7 +121,7 @@ h1{
     flex-direction: row-reverse;
 }
 .push_right pre{
-    background-color: green;
+    background-color: rgba(0, 128, 0, 0.61);
 }
 
 .notification{

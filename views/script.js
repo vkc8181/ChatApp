@@ -52,9 +52,13 @@ const displayNotification = (msg) => {
 
 // displayNotification(userName+' joined the chat');
 
-const displayMsg = (msg, source, owner) => {
+const displayMsg = (msg, source, owner, msgId) => {
     const newMsg = document.createElement('pre');
     newMsg.classList.add('message');
+
+    if(msgId)
+        newMsg.setAttribute('id', msgId);
+
     const newMsgDiv = document.createElement('div');
     newMsgDiv.classList.add('messageDiv');
     newMsgDiv.appendChild(newMsg);
@@ -72,6 +76,8 @@ const displayMsg = (msg, source, owner) => {
     messageBox.appendChild(newMsgDiv);
     updateScroll();
 };
+
+
 const port = 8080;
 
 // const ws = new WebSocket(document.URL);
@@ -103,6 +109,9 @@ const handleWS = () => {
                 if(parsedData.message){
                     displayMsg(parsedData.message, 'Server', parsedData.userName);
                     console.log(event.data);
+                }
+                if(parsedData.recieved){
+                    document.querySelector(`#${parsedData.recieved}`).style.backgroundColor = 'green';
                 }
                 if(parsedData.roomId){
                     roomName.textContent = `RoomId: ${parsedData.roomId}`;
@@ -160,14 +169,13 @@ const isNonEmpty = (obj) => {
 }
 
 button.addEventListener('click', event => {
+    const msgId = 'm' + new Date().getTime();
     event.preventDefault();
-    // event.stopPropagation();
-    // const isValid = isNonEmpty(input);
-    // console.log('isNonEmpty(msg)=',isValid);
+
     if(isNonEmpty(input)){
         // console.log('iv=',input.value)
-        ws.send(JSON.stringify( {message: input.value} ));
-        displayMsg(input.value, 'Self', 'You');
+        ws.send(JSON.stringify( {message: input.value, msgId } ));  //Sending message id along with msg
+        displayMsg(input.value, 'Self', 'You', msgId);
     }
     input.value = "";
 });

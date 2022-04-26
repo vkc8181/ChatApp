@@ -89,6 +89,7 @@ wss.on('connection', wsc => {
                 client.send( JSON.stringify({ userName: wsc.userName, message: incomingObj.message }) );
                 // console.log('vkc=',client);
             });
+            wsc.send(JSON.stringify({ recieved: incomingObj.msgId }));
         }
         // wsc.send(data);
 
