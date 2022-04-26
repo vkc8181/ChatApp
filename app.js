@@ -85,19 +85,21 @@ wss.on('connection', wsc => {
         }
         if(incomingObj.message){
             wss.clients.forEach(client => {
-                if(client.readyState === ws.OPEN && client != wsc && client.roomId === wsc.roomId)
+                if(client.readyState === ws.OPEN && client.roomId === wsc.roomId && client != wsc)
                 client.send( JSON.stringify({ userName: wsc.userName, message: incomingObj.message }) );
                 // console.log('vkc=',client);
             });
         }
         // wsc.send(data);
+
+        //Sending onlineuser's name every 1 sec 
         setInterval(() => {
-           let onlineInRoom = 0;
+           let onlineUsers = [];
            wss.clients.forEach(client => {
-            if(client.readyState === ws.OPEN && client.roomId === wsc.roomId)
-                onlineInRoom++;
+            if( client.readyState === ws.OPEN && client.roomId === wsc.roomId )
+                onlineUsers.push(client.userName);
             });
-            wsc.send(JSON.stringify({ onlineCount: onlineInRoom }));
+            wsc.send(JSON.stringify({ onlineUsers }));
         },1000);
     });
 });

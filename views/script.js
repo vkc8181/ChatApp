@@ -11,6 +11,8 @@ console.log('roomiD: '+roomId);
 
 const roomName = document.querySelector('.container .roomInfo .roomName');
 const onlineCountDiv = document.querySelector('.container .roomInfo .onlineCountDiv');
+const onlineUsersDiv = document.querySelector('.container .roomInfo .onlineUsers');
+
 const messageBox = document.querySelector('#messageBox');
 const input = document.querySelector('#input');
 const button = document.querySelector('button');
@@ -18,7 +20,8 @@ const form = document.querySelector('form');
 const debug = document.querySelector('#debug');
 const audio = new Audio('/ting.mp3');
 
-const userName = prompt('Enter your name');
+// const userName = prompt('Enter your name');
+const userName = 'vkc';
 
 
 button.disabled = true;
@@ -47,7 +50,7 @@ const displayNotification = (msg) => {
     newNotification.textContent = msg;
 
     messageBox.appendChild(newMsgDiv);
-    
+    updateScroll();
 };
 
 // displayNotification(userName+' joined the chat');
@@ -65,11 +68,12 @@ const displayMsg = (msg, source, owner) => {
         audio.play();
 
     if(owner)
-        newMsg.textContent = `${owner}: ${msg}`;
+        newMsg.textContent = `${owner}:\n${msg}`;
     else 
         newMsg.textContent = msg;
 
     messageBox.appendChild(newMsgDiv);
+    updateScroll();
 };
 const port = 8080;
 
@@ -107,8 +111,15 @@ const handleWS = () => {
                 if(parsedData.roomId){
                     roomName.textContent = `RoomId: ${parsedData.roomId}`;
                 }
-                if(parsedData.onlineCount){
-                    onlineCountDiv.textContent = `Online: ${parsedData.onlineCount}`;
+                if(parsedData.onlineUsers){
+                    console.log('onlineUsers:',parsedData.onlineUsers)
+                    onlineCountDiv.textContent = `Online: ${parsedData.onlineUsers.length}`;
+                    onlineUsersDiv.innerHTML = '';
+                    parsedData.onlineUsers.forEach(member => {
+                        const memberName = document.createElement('p');
+                        memberName.innerHTML = `<i class="fa-solid fa-circle"></i> ${member}`;
+                        onlineUsersDiv.appendChild(memberName);
+                    });
                 }
             })
 
@@ -124,84 +135,11 @@ const handleWS = () => {
     setTimeout(handleWS, 2000);
 }
 
+
 handleWS();
 
-/*
-setInterval(() => {
-    console.log('readyState = ',ws.readyState);
-    debug.textContent = `readyState = ${ws.readyState}`;
-    if(ws.readyState === 3){
-        try{
-            ws = new WebSocket(`ws://localhost:${port}`);  //For localhost
-            //  ws = new WebSocket(`wss://${document.domain}`);  //For cloud deploy
-             ws.onopen = ()=>{
-                console.log('Opened conection from setIntervel');
-                ws.send(JSON.stringify({roomId}));
-            }
-
-            ws.addEventListener('message', ( event ) => {       //It finally worked
-                const parsedData = parseIfValifJSON( event.data );
-                if(parsedData.message){
-                    displayMsg(parsedData.message, 'Server');
-                    console.log(event.data);
-                }
-                if(parsedData.roomId){
-                    roomName.textContent = `RoomId: ${parsedData.roomId}`;
-                }
-                if(parsedData.onlineCount){
-                    onlineCountDiv.textContent = `Online: ${parsedData.onlineCount}`;
-                }
-            })
 
 
-        }
-        catch(e) {
-            console.log('Can\'t connect to web socket');
-        }
-    }
-
-},2000);
-*/
-
-
-
-
-// ws.vkc=4;
-
-// ws.onopen = ()=>{
-//     // ws.vkc=4;
-//     console.log('Opened conection for first time');
-//     ws.send(JSON.stringify({roomId}));
-//     button.disabled = false;
-// }
-
-// ws.onmessage = event => {                                    //Its better to use addEventListner insted of on
-//     const parsedData = parseIfValifJSON( event.data );
-//     if(parsedData.message){
-//         displayMsg(parsedData.message, 'Server');
-//         console.log(event.data);
-//     }
-//     if(parsedData.roomId){
-//         roomName.textContent = `RoomId: ${parsedData.roomId}`;
-//     }
-//     if(parsedData.onlineCount){
-//         onlineCountDiv.textContent = `Online: ${parsedData.onlineCount}`;
-//     }
-// };
-
-// ws.addEventListener('message', ( event ) => {
-//     const parsedData = parseIfValifJSON( event.data );
-//     if(parsedData.message){
-//         displayMsg(parsedData.message, 'Server');
-//         console.log(event.data);
-//     }
-//     if(parsedData.roomId){
-//         roomName.textContent = `RoomId: ${parsedData.roomId}`;
-//     }
-//     if(parsedData.onlineCount){
-//         onlineCountDiv.textContent = `Online: ${parsedData.onlineCount}`;
-//     }
-// })
 
 const removeBlankChar = (obj, si) => {
     obj.value = obj.value.slice(si);
@@ -247,4 +185,8 @@ input.addEventListener('keydown',(event)=> {
 }
     
     console.log(event);
-})
+});
+
+onlineCountDiv.addEventListener('click', event => {
+    onlineUsersDiv.classList.toggle('visible');
+});

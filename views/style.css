@@ -1,0 +1,146 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Open Sans', sans-serif;
+}
+h1{
+    text-align: center;
+}
+.container{
+    width: 30%;
+    margin: auto;
+    border: 2px black solid;    
+}
+
+.container .roomInfo{
+    display: flex;
+    flex-wrap: wrap;
+    color: white;
+    background-color: rgb(31, 5, 99);
+    min-height: 50px;
+    position: relative;
+}
+.container .roomInfo .roomName{
+    /* background-color: green; */
+    /* flex-grow: 5; */
+    width: 50%;
+    padding: 9px;
+}
+
+.container .roomInfo .onlineCountDiv{
+    /* background-color: pink; */
+    /* flex-grow: 5; */
+    width: 50%;
+    padding: 9px;
+    text-align: end;
+    cursor: pointer;
+    
+}
+.container .roomInfo .onlineUsers{
+    padding: 10px 10px;
+    display: none;
+    height: auto;
+    width: 100%;
+    text-align: end;
+    background-color: rgba(31, 5, 99, 0.8);
+    transition: 2s;
+    position: absolute;
+    top: 100%;
+    right: 0;
+}
+
+.visible{
+    display: block !important;
+}
+
+.container .roomInfo .onlineUsers i{
+    color: rgb(122, 201, 3);
+    font-size: 70%;
+    margin: 5px;
+}
+
+.container form {
+    display: flex;
+    margin: 5px 0;
+}
+
+.container #input {
+    resize: none;
+    height: 50px;
+    /* max-height: 100px; */
+    flex-grow: 8;
+    outline: 0;
+    border: grey solid 1px;
+    /* height: 50px; */
+    font-size: 16px;
+    padding: 4px 20px;
+    border-radius: 100px;
+    resize: none;
+}
+.container button{
+    /* width: 10.2%; */
+    flex-grow: 1;
+    cursor: pointer;
+    /* height: 100%; */
+    border: 2px green solid;
+    border-radius: 100px;
+    color: white;
+    background-color: green;
+}
+
+#messageBox {
+    /* border: 2px black solid; */
+    /* width: 30%;
+    margin: auto; */
+    padding: 15px;
+    overflow: auto;
+    scrollbar-width: none; /* For firefox */
+    height: 500px;
+}
+#messageBox::-webkit-scrollbar{    /* For chrome, safari, opera */
+    display: none;
+}
+.messageDiv{
+    margin: 10px;
+    /* background-color: gray; */
+    display: flex;
+    /* width: 70%; */
+}
+.message {
+    /* margin: 20px; */
+    background-color: rgb(71, 71, 71);
+    padding: 5px;
+    border-radius: 8px;
+    color:white;
+    display: inline;
+    max-width: 80%;
+}
+.push_right{
+    display: flex;
+    flex-direction: row-reverse;
+}
+.push_right pre{
+    background-color: green;
+}
+
+.notification{
+    background-color: rgb(159, 15, 84);
+    padding: 10px;
+    border-radius: 8px;
+    color:white;
+    display: inline;
+    max-width: 80%;
+    margin-left: -10px;
+}
+
+@media only screen and (max-width: 1024px) {
+    .container {
+        width: 60%;
+    }
+}
+@media only screen and (max-width: 600px) {
+    .container {
+        width: 99.5%;
+    }
+}
